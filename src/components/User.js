@@ -31,7 +31,7 @@ const User = ({ gender, name, location, email, picture, login ,dob}) => {
             <div><strong>Name:</strong> {name.first} {name.last}</div>
             
             {/* Button to trigger saving user data */}
-            <button onClick={handleSave}>ADD USER</button>
+            <button onClick={handleSave}>INSERT</button>
         </div>
     );
 };

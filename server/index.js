@@ -69,6 +69,6 @@ function saveUserData(userData) {
 }
 
 
-app.listen(3008, () => {
-    console.log('Server started on port 3008');
+app.listen(3000, () => {
+    console.log('Server started on port 3000');
 });
