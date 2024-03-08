@@ -1,9 +1,6 @@
-const express = require('express');
-const axios = require('axios');
-const path = require('path'); 
-const mysql = require('mysql');
-const bodyParser = require('body-parser');
+// saveuser.js
 
+const mysql = require('mysql');
 const env = require('../env.js');
 const config = require('../dbconfig.js')[env];
 
@@ -13,7 +10,8 @@ const connection = mysql.createConnection({
   port: config.port,
   password: config.password,
   database: config.database
-})
+});
+
 connection.connect((err) => {
   if (err) {
       console.error('Error connecting to MySQL:', err);
@@ -22,39 +20,6 @@ connection.connect((err) => {
   }
 });
 
-console.log('Running Environment: ' + env);
-
-const app = express();
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '..', 'public')));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-});
-
-app.get('/users', (req, res) => {
-  axios.get('https://randomuser.me/api/?page=1&results=10')
-      .then(response => {
-          res.send(response.data);
-       })
-       .catch(error => {
-          console.error('Error fetching user data:', error);
-          res.status(500).send('Error fetching user data');
-       });
-});
-
-
-app.post('/saveuser', (req, res) => {
-  const userData = req.body;
-  if (!userData) {
-    return res.status(400).send('Invalid user data');
-  }
-  console.log(userData);
-  saveUserData(userData);
-});
-
-
-// ฟังก์ชันสำหรับบันทึกข้อมูลผู้ใช้ในฐานข้อมูล
 function saveUserData(userData) {
   const { gender, name, location, email, login, picture ,dob} = userData;
   const { title, first, last } = name;
@@ -76,7 +41,4 @@ function saveUserData(userData) {
   });
 }
 
-
-app.listen(3008, () => {
-    console.log('Server started on port 3008');
-});
+module.exports = saveUserData;
